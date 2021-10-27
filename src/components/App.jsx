@@ -11,18 +11,31 @@ export default class App extends React.Component {
       filters: {
         sort_by: 'popularity.desc',
       },
+      page: 1,
     };
   }
 
   onChangeFilters = (event) => {
-    const newFilters = { ...this.state.filters, [event.target.name]: event.target.value };
+    const value = event.target.value;
+    const name = event.target.name;
+
+    this.setState((prevState) => ({
+      filters: {
+        ...prevState.filters,
+        [name]: value,
+      },
+    }));
+  };
+
+  onChangePage = (page) => {
+    console.log(page);
     this.setState({
-      filters: newFilters,
+      page,
     });
   };
 
   render() {
-    const { filters } = this.state;
+    const { filters, page } = this.state;
 
     return (
       <div className='container'>
@@ -31,12 +44,17 @@ export default class App extends React.Component {
             <div className='card' style={{ width: '100%' }}>
               <div className='card-body'>
                 <h3>Фильтры</h3>
-                <Filters filters={filters} onChangeFilters={this.onChangeFilters} />
+                <Filters
+                  filters={filters}
+                  page={page}
+                  onChangeFilters={this.onChangeFilters}
+                  onChangePage={this.onChangePage}
+                />
               </div>
             </div>
           </div>
           <div className='col-8'>
-            <MoviesList filters={filters} />
+            <MoviesList filters={filters} page={page} onChangePage={this.onChangePage} />
           </div>
         </div>
       </div>
