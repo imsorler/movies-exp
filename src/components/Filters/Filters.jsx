@@ -1,45 +1,30 @@
 import React from 'react';
 
+import SortBy from './SortBy';
+import PrimaryReleaseYear from './PrimaryReleaseYear';
+import Genres from './Genres';
+
 export default class Filters extends React.Component {
   render() {
     const {
-      filters: { sort_by },
+      filters: { sort_by, primary_release_year, with_genres },
       page,
+      total_pages,
       onChangeFilters,
-      onChangePage,
+      onChangePagination,
     } = this.props;
 
     return (
       <form className='mb-3'>
-        <div className='form-group'>
-          <label htmlFor='sort_by'>Сортировать по:</label>
-          <select
-            id='sort_by'
-            name='sort_by'
-            className='from-control'
-            value={sort_by}
-            onChange={onChangeFilters}>
-            <option value='popularity.desc'>Популярное по убыванию</option>
-            <option value='popularity.asc'>Популярное по возрастанию</option>
-            <option value='vote_average.desc'>Рейтинг по убыванию</option>
-            <option value='vote_average.asc'>Рейтинг по возрастанию</option>
-          </select>
-        </div>
-        <div className='btn-group'>
-          <button
-            type='button'
-            className='btn btn-light'
-            onClick={onChangePage.bind(null, page - 1)}
-            disabled={page === 1}>
-            Назад
-          </button>
-          <button
-            type='button'
-            className='btn btn-light'
-            onClick={onChangePage.bind(null, page + 1)}>
-            Вперед
-          </button>
-        </div>
+        <SortBy value={sort_by} onChangeFilters={onChangeFilters} />
+        <Genres with_genres={with_genres} onChangeFilters={onChangeFilters} />
+        <PrimaryReleaseYear
+          page={page}
+          total_pages={total_pages}
+          onChangePagination={onChangePagination}
+          onChangeFilters={onChangeFilters}
+          primary_release_year={primary_release_year}
+        />
       </form>
     );
   }

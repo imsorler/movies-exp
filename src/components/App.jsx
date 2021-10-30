@@ -10,8 +10,11 @@ export default class App extends React.Component {
     this.state = {
       filters: {
         sort_by: 'popularity.desc',
+        primary_release_year: '2019',
+        with_geners: [],
       },
       page: 1,
+      total_pages: 500,
     };
   }
 
@@ -27,15 +30,16 @@ export default class App extends React.Component {
     }));
   };
 
-  onChangePage = (page) => {
-    console.log(page);
+  onChangePagination = (page) => {
     this.setState({
       page,
+      total_pages: this.state.total_pages,
     });
   };
 
   render() {
-    const { filters, page } = this.state;
+    const { filters, page, total_pages, with_genres } = this.state;
+    const defaultRealise = this.state.filters.primary_release_year
 
     return (
       <div className='container'>
@@ -45,16 +49,25 @@ export default class App extends React.Component {
               <div className='card-body'>
                 <h3>Фильтры</h3>
                 <Filters
-                  filters={filters}
                   page={page}
+                  filters={filters}
+                  total_pages={total_pages}
+                  with_genres={with_genres}
+                  primary_release_year={defaultRealise}
                   onChangeFilters={this.onChangeFilters}
-                  onChangePage={this.onChangePage}
+                  onChangePagination={this.onChangePagination}
                 />
               </div>
             </div>
           </div>
           <div className='col-8'>
-            <MoviesList filters={filters} page={page} onChangePage={this.onChangePage} />
+            <MoviesList
+              filters={filters}
+              page={page}
+              onChangePagination={this.onChangePagination}
+              onChangeFilters={this.onChangeFilters}
+              primary_release_year={filters.primary_release_year}
+            />
           </div>
         </div>
       </div>
