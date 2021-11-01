@@ -18,6 +18,7 @@ export default class Login extends Component {
   };
 
   render() {
+    const { updateUser, updateSessionId } = this.props;
     return (
       <div>
         <button className='btn btn-success' type='button' onClick={this.toggleModal}>
@@ -25,7 +26,7 @@ export default class Login extends Component {
         </button>
         <Modal isOpen={this.state.showModal} toggle={this.toggleModal}>
           <ModalBody>
-            <LoginForm />
+            <LoginForm updateUser={updateUser} updateSessionId={updateSessionId} />
           </ModalBody>
         </Modal>
       </div>

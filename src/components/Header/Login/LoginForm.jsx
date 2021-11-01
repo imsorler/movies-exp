@@ -18,6 +18,7 @@ export default class LoginForm extends Component {
       [name]: value,
       errors: {
         ...prevState.errors,
+        base: null,
         [name]: null,
       },
     }));
@@ -80,12 +81,17 @@ export default class LoginForm extends Component {
             request_token: result.request_token,
           }),
         },
-      );
-
-      this.setState({
-        submitting: false,
-      });
-      console.log(session_id);
+      )
+        .then((data) => {
+          this.props.updateSessionId(data.session_id);
+          return fetchApi(`${API_URL}/account?api_key=${API_KEY_3}&session_id=${data.session_id}`);
+        })
+        .then((user) => {
+          this.props.updateUser(user);
+          this.setState({
+            submitting: false,
+          });
+        });
     } catch (error) {
       this.setState({
         submitting: false,
