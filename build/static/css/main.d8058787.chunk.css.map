@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/styles/index.css"],"names":[],"mappings":"AAAA,KACE,kBACF,CAEA,kBACE,aACF","file":"main.d8058787.chunk.css","sourcesContent":["body {\n  background: #fdfdfd;\n}\n\n.invalid-feedback {\n  display: block;\n}\n"]}
