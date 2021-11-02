@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-export default class MoviesItem extends React.Component {
+export default class MoviesItem extends Component {
   render() {
     const { item } = this.props;
 

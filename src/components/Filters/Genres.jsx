@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { AppContext } from '../App';
 import { API_URL, API_KEY_3 } from '../../api/api';
 
 import UICheckbox from '../UIComponents/UICheckbox';
 
-export default class Genres extends Component {
+class Genres extends Component {
   constructor() {
     super();
 
@@ -49,3 +50,13 @@ export default class Genres extends Component {
     );
   }
 }
+
+export default () => {
+  return (
+    <AppContext.Consumer>
+      {(context) => {
+        return <Genres allGeners={context} />;
+      }}
+    </AppContext.Consumer>
+  );
+};

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import SortBy from './SortBy';
 import PrimaryReleaseYear from './PrimaryReleaseYear';
 import Genres from './Genres';
 
-export default class Filters extends React.Component {
+export default class Filters extends Component {
   render() {
     const {
       filters: { sort_by, primary_release_year, with_genres },

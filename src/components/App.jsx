@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Cookies from 'universal-cookie';
 
 import Header from './Header/Header';
 import Filters from './Filters/Filters';
 import MoviesList from './Movies/MoviesList';
 
+import MoviesPages from '../pages/MoviesPage/MoviesPages';
+
 import { fetchApi } from '../utils/functions';
 import { API_URL, API_KEY_3 } from '../api/api';
 
 const cookies = new Cookies();
 
-export default class App extends React.Component {
+export const AppContext = React.createContext();
+
+export default class App extends Component {
   constructor() {
     super();
 
@@ -20,7 +24,7 @@ export default class App extends React.Component {
       filters: {
         sort_by: 'popularity.desc',
         primary_release_year: '2019',
-        with_geners: [],
+        with_geners: [1],
       },
       page: 1,
       total_pages: 500,
@@ -43,25 +47,6 @@ export default class App extends React.Component {
     });
   };
 
-  onChangeFilters = (event) => {
-    const value = event.target.value;
-    const name = event.target.name;
-
-    this.setState((prevState) => ({
-      filters: {
-        ...prevState.filters,
-        [name]: value,
-      },
-    }));
-  };
-
-  onChangePagination = (page) => {
-    this.setState({
-      page,
-      total_pages: this.state.total_pages,
-    });
-  };
-
   componentDidMount() {
     const session_id = cookies.get('session_id');
     if (session_id) {
@@ -72,41 +57,14 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { filters, page, total_pages, with_genres, user } = this.state;
-    const defaultRealise = this.state.filters.primary_release_year;
+    const { user } = this.state;
 
     return (
       <>
-        <Header user={user} updateUser={this.updateUser} updateSessionId={this.updateSessionId} />
-        <div className='container'>
-          <div className='row mt-4'>
-            <div className='col-4'>
-              <div className='card' style={{ width: '100%' }}>
-                <div className='card-body'>
-                  <h3>Фильтры</h3>
-                  <Filters
-                    page={page}
-                    filters={filters}
-                    total_pages={total_pages}
-                    with_genres={with_genres}
-                    primary_release_year={defaultRealise}
-                    onChangeFilters={this.onChangeFilters}
-                    onChangePagination={this.onChangePagination}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className='col-8'>
-              <MoviesList
-                filters={filters}
-                page={page}
-                onChangePagination={this.onChangePagination}
-                onChangeFilters={this.onChangeFilters}
-                primary_release_year={filters.primary_release_year}
-              />
-            </div>
-          </div>
-        </div>
+        <AppContext.Provider value={this.state.filters.with_geners}>
+          <Header user={user} updateUser={this.updateUser} updateSessionId={this.updateSessionId} />
+          <MoviesPages />
+        </AppContext.Provider>
       </>
     );
   }
